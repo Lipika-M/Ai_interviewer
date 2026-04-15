@@ -17,11 +17,18 @@ services:
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
       - ai-interviewer-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  # AI Interviewer Application
-  app:
-    build: .
-    container_name: ai-interviewer-app
+  # Backend API Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ai-interviewer-backend
     restart: unless-stopped
     ports:
       - "5000:5000"
@@ -31,13 +38,30 @@ services:
       MONGODB_URI: mongodb://admin:password123@mongodb:27017/ai_interviewer?authSource=admin
       JWT_SECRET: your-super-secret-jwt-key-change-in-production
       OPENAI_API_KEY: ${OPENAI_API_KEY}
-      CLIENT_URL: http://localhost:3000
+      CLIENT_URL: http://frontend:3000
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
     networks:
       - ai-interviewer-network
     volumes:
       - ./logs:/app/logs
+
+  # Frontend Web Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ai-interviewer-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - backend
+    networks:
+      - ai-interviewer-network
 
   # Redis for caching (optional)
   redis:

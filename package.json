@@ -4,32 +4,13 @@
   "description": "AI-powered live coding interview platform",
   "main": "backend/src/index.js",
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "nodemon backend/src/index.js",
-    "client": "cd client && npm run dev",
-    "build": "cd client && npm run build",
-    "start": "node backend/src/index.js",
-    "install-all": "npm install && cd client && npm install"
-  },
-  "dependencies": {
-    "axios": "^1.6.2",
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.0.3",
-    "multer": "^1.4.5-lts.1",
-    "node-cron": "^3.0.3",
-    "openai": "^4.20.1",
-    "socket.io": "^4.7.4",
-    "socket.io-client": "^4.8.1",
-    "uuid": "^9.0.1",
-    "winston": "^3.11.0"
+    "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix backend run start",
+    "install-all": "npm install && npm --prefix backend install && npm --prefix frontend install"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2",
-    "nodemon": "^3.0.2"
+    "concurrently": "^8.2.2"
   },
   "keywords": [
     "ai",
