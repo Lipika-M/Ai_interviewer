@@ -2,13 +2,13 @@
   "name": "ai-interviewer",
   "version": "1.0.0",
   "description": "AI-powered live coding interview platform",
-  "main": "server/index.js",
+  "main": "backend/src/index.js",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "nodemon server/index.js",
+    "server": "nodemon backend/src/index.js",
     "client": "cd client && npm run dev",
     "build": "cd client && npm run build",
-    "start": "node server/index.js",
+    "start": "node backend/src/index.js",
     "install-all": "npm install && cd client && npm install"
   },
   "dependencies": {

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ChatMessage = require('../models/ChatMessage');
-const { authenticateToken } = require('../middleware/auth');
+const { authenticateToken } = require('../middlewares/auth');
 
 // Get chat messages for a session
 router.get('/session/:sessionId', authenticateToken, async (req, res) => {

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const AIInteraction = require('../models/AIInteraction');
-const { authenticateToken } = require('../middleware/auth');
+const { authenticateToken } = require('../middlewares/auth');
 
 // Get AI interactions for a specific candidate
 router.get('/candidate/:candidateEmail', async (req, res) => {

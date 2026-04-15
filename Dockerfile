@@ -10,10 +10,10 @@ RUN npm run build
 
 # Build stage for Node.js backend
 FROM node:18-alpine as backend-build
-WORKDIR /app/server
-COPY server/package*.json ./
+WORKDIR /app
+COPY package*.json ./
 RUN npm ci --only=production
-COPY server/ ./
+COPY backend/ ./backend/
 
 # Production stage
 FROM node:18-alpine
@@ -23,7 +23,7 @@ WORKDIR /app
 RUN apk add --no-cache mongodb-tools
 
 # Copy backend files
-COPY --from=backend-build /app/server ./
+COPY --from=backend-build /app/backend ./backend
 
 # Copy frontend build
 COPY --from=frontend-build /app/client/build ./public
@@ -44,4 +44,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD node -e "require('http').get('http://localhost:5000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
 
 # Start the application
-CMD ["node", "index.js"]
+CMD ["node", "backend/src/index.js"]
